@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File Upload</title>
+  </head>
+  <body>
+    <h1>File Upload</h1>
+    <input type="file" id="file-input">
+    <button id="upload-button">Upload</button>
+    <div id="file-content"></div>
+    <script>
+      const uploadButton = document.getElementById('upload-button');
+      const fileInput = document.getElementById('file-input');
+      const fileContent = document.getElementById('file-content');
+
+      uploadButton.addEventListener('click', () => {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = (event) => {
+          const text = event.target.result;
+          const formattedText = text.replace(/\n/g, '<br>');
+          fileContent.innerHTML = `<p>${formattedText}</p>`;
+        }
+      });
+    </script>
+  </body>
+</html>
