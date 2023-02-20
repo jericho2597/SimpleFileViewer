@@ -1,83 +1,150 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <title>Simple File Viewer</title>
     <style>
-      html, body, textarea {
+      * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        border: 0;
-        width: 100%;
-        height: 100%;
       }
       body {
-        margin: 0;
-        padding: 0;
+        background-color: #fafafa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
-      h1 {
-        margin-top: 0;
-        padding: 10px;
-        background-color: #eee;
+      .container {
+        background-image: linear-gradient(
+          to bottom right,
+          #c2d7ff,
+          #a3e2ff,
+          #84bfff,
+          #66a8ff,
+          #48adff
+        );
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 95%;
+        height: 95%;
+        display: flex;
+        flex-direction: column;
       }
       input[type="file"] {
-        display: block;
-        margin: 10px;
+        display: none;
       }
-      #file-editor {
-        display: block;
-        margin: 10px;
-        padding: 10px;
+      .btn {
+        background-color: #1976d2;
+        border: none;
+        color: rgb(255, 255, 255);
+        padding: 10px 20px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 120px;
+        transition: background-color 0.3s ease;
+
+        align-items: center;
+        font-family: "Roboto","Helvetica","Arial",sans-serif;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.02857em;
+        line-height: 1.75;
+        font-size: 0.875rem;
+        box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+      }
+      .btn:hover {
+        background-color: #0055c5;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .row > * {
+        margin-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      #text {
         width: 100%;
-        min-height: 100%;
-        height: 100%;
-        border: 1px solid #ccc;
+        resize: none;
+        font-size: 16px;
+        padding: 10px;
+        flex: auto;
+        background-color: rgba(255, 255, 255, 0.837);
+        border:solid 2px rgba(6, 29, 56, 0.781);
+        border-radius: 8px;
+        outline: none;
+
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+
       }
-      #textarea-div {
-        min-width: 90%;
-        width: 90%;
-        min-height: 90%;
-        height: 90%;
-        vertical-align:top;
+      #text::-webkit-scrollbar-track
+      {
+      -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0);
+      border-radius: 8px;
+      background-color: #ffffff00;
       }
-      #download-button {
-        display: block;
-        margin: 10px auto;
+
+      #text::-webkit-scrollbar
+      {
+      width: 7px;
+      background-color: #ffffff00;
+      }
+
+      #text::-webkit-scrollbar-thumb
+      {
+      border-radius: 8px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+      background-color: #555;
       }
     </style>
   </head>
   <body>
-    <h1>Simple File Viewer</h1>
-    <input type="file" id="file-input">
-    <button id="upload-button">Upload</button>
-    <button id="download-button">Download</button>
-    <div id="textarea-div">
-      <textarea id="file-editor"></textarea>
+    <div class="container">
+      <div class="row">
+        <input type="file" id="file"/>
+        <label for="file" class="btn"><strong>Upload</strong></label>
+        <button id="download-btn" class="btn" style="margin-right: 10px;">
+          <strong>Download</strong>
+        </button>
+      </div>
+      <textarea id="text"></textarea>
     </div>
     <script>
-      const uploadButton = document.getElementById('upload-button');
-      const fileInput = document.getElementById('file-input');
-      const fileContent = document.getElementById('file-content');
-      const fileEditor = document.getElementById('file-editor');
-      const downloadButton = document.getElementById('download-button');
+      const fileInput = document.getElementById("file");
+      const downloadBtn = document.getElementById("download-btn");
+      const uploadBtn = document.getElementById("upload-btn");
+      const textArea = document.getElementById("text");
 
-      uploadButton.addEventListener('click', () => {
-        const file = fileInput.files[0];
-        console.log(file.name);
+      fileInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
         const reader = new FileReader();
         reader.readAsText(file);
-        reader.onload = (event) => {
-          const text = event.target.result;
-          const formattedText = text.replace(/\n/g, '<br>');
-          fileEditor.value = text;
-        }
+        reader.onload = () => {
+          textArea.value = reader.result;
+        };
       });
 
-      downloadButton.addEventListener('click', () => {
-        const updatedText = fileEditor.value;
-        const updatedFilename = "updated-" + fileInput.files[0].name;
-        const blob = new Blob([updatedText], { type: 'text/plain' });
+      downloadBtn.addEventListener("click", () => {
+        const text = textArea.value;
+        let updatedFilename = "untitled.txt";
+        console.log(fileInput.files[0]);
+        if(fileInput.files[0]){
+          updatedFilename = "updated-" + fileInput.files[0].name;
+        }
+        const blob = new Blob([text], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
         link.download = updatedFilename;
         document.body.appendChild(link);
