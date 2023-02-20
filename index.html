@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Simple File Viewer</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <style>
       * {
         box-sizing: border-box;
@@ -38,6 +39,8 @@
         display: none;
       }
       .btn {
+        margin-bottom: 20px;
+        margin-right: 20px;
         background-color: #1976d2;
         border: none;
         color: rgb(255, 255, 255);
@@ -69,9 +72,7 @@
         flex-wrap: wrap;
       }
       .row > * {
-        margin-bottom: 20px;
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-bottom: 10px;
       }
       #text {
         width: 100%;
@@ -88,6 +89,9 @@
         -moz-box-shadow: none;
         box-shadow: none;
 
+      }
+      #logo {
+        flex-grow: 1;
       }
       #text::-webkit-scrollbar-track
       {
@@ -118,6 +122,8 @@
         <button id="download-btn" class="btn" style="margin-right: 10px;">
           <strong>Download</strong>
         </button>
+        <div style="flex-grow: 1;"></div>
+        <img src="assets/logo.png" class="logo" alt="logo" width="55" height="55">
       </div>
       <textarea id="text"></textarea>
     </div>
