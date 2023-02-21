@@ -7,3 +7,7 @@ As this is not possible in generic file viewers, I enable this by providing this
 Logo generated with IconifyAI.com
 
 To open the web app, go to https://jericho2597.github.io/SimpleFileViewer/
+
+Example:
+
+![Usage of the app](example.png)
